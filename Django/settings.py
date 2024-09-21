@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECRET_KEY = 'zelz#_q@#r5ef-f3ut6)7uovu3)nt)-rnuj)8plnqdw(2^8cyi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["tranquil-beyond-37748-efa323c997d4.herokuapp.com", 'localhost', '127.0.0.1']
 
