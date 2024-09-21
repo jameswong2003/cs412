@@ -24,12 +24,12 @@ def quote(request):
     quote = random.choice(QUOTES)
     image = random.choice(IMAGES)
     context = {'quote': quote, 'image': image}
-    return render(request, 'quote.html', context)
+    return render(request, 'quotes/quote.html', context)
 
 def show_all(request):
     '''Shows all images and quotes'''
     context = {'quotes': QUOTES, 'images': IMAGES}
-    return render(request, 'show_all.html', context)
+    return render(request, 'quotes/show_all.html', context)
 
 def about(request):
     '''Shows name and biography'''
@@ -37,4 +37,4 @@ def about(request):
         'name': 'Lebron James',
         'biography': "LeBron Raymone James Sr. is an American professional basketball player for the Los Angeles Lakers of the National Basketball Association."
     }
-    return render(request, 'about.html', context)
+    return render(request, 'quotes/about.html', context)
