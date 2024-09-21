@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Quote of the Day{% endblock %}
+
+{% block content %}
+    <h1>Quote of the Day</h1>
+    <p>{{ quote }}</p>
+    <img src="{{ image }}" alt="Quote Image" style="width:300px;">
+{% endblock %}
