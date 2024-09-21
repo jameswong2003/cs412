@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'quotes.urls'
+ROOT_URLCONF = 'Django.urls'
 
 TEMPLATES = [
     {
