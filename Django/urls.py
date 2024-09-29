@@ -19,5 +19,6 @@ from quotes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('quotes/', include("quotes.urls")),
+    # path('quotes/', include("quotes.urls")),
+    path('restaurant/', include("restaurant.urls"))
 ]

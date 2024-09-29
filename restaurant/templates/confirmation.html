@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Order Confirmation</h2>
+    
+    <p>Thank you, {{ customer_name }}! Your order has been placed.</p>
+    <h3>Order Summary:</h3>
+    <ul>
+        {% for item in ordered_items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    
+    <p><strong>Total Price:</strong> ${{ total_price }}</p>
+    <p><strong>Special Instructions:</strong> {{ special_instructions }}</p>
+    <p>Your order will be ready by: {{ ready_time|date:"H:i" }}</p>
+    <p>Contact Information: {{ customer_phone }} | {{ customer_email }}</p>
+{% endblock %}

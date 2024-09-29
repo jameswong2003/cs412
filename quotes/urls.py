@@ -1,6 +1,3 @@
-## quotes/urls.py
-## descrption: the app-specific URLS for the hw application
-
 from django.urls import path
 from django.conf import settings
 from . import views

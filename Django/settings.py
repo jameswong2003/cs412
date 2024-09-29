@@ -32,7 +32,8 @@ ALLOWED_HOSTS = ["tranquil-beyond-37748-efa323c997d4.herokuapp.com", 'localhost'
 # Application definition
 
 INSTALLED_APPS = [
-    'quotes',
+    # 'quotes',
+    'restaurant',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

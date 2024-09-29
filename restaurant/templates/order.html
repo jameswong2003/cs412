@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Order Now</h2>
+    <form method="POST" action="{% url 'confirmation' %}">
+        {% csrf_token %}
+        
+        <h3>Menu Items</h3>
+        <ul class="menu">
+            {% for item in menu_items %}
+                <li>
+                    <input type="checkbox" name="{{ item.name }}"> {{ item.name }} - ${{ item.price }}
+                    {% if item.options %}
+                        <ul>
+                            {% for option in item.options %}
+                                <li>
+                                    <input type="checkbox">
+                                    {{ option }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h3>Today's Special:
+            <br />
+             {{ daily_special }}
+        </h3> 
+        <br />
+        <input type="checkbox" name="{{ daily_special }}"> Add to order
+
+        <h3>Customer Information</h3>
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label for="instructions">Special Instructions:</label>
+        <textarea name="instructions"></textarea><br>
+
+        <input type="submit" value="Place Order">
+    </form>
+{% endblock %}
