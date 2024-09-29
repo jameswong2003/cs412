@@ -21,7 +21,7 @@ def main(request):
     '''
     the page with basic information about the restaurant. the main page should include the name, location, hours of operation (displayed as a list or table), and one or more photos appropriate to such a page.
     '''
-    return render(request, 'main.html')
+    return render(request, 'restaurant/main.html')
 
 def order(request):
     '''
@@ -34,7 +34,7 @@ def order(request):
         "daily_special": daily_special
     }
 
-    return render(request, 'order.html', context)
+    return render(request, 'restaurant/order.html', context)
 
 def confirmation(request):
     '''
@@ -60,6 +60,6 @@ def confirmation(request):
             'ready_time': ready_time
         }
         
-        return render(request, 'confirmation.html', context)
+        return render(request, 'restaurant/confirmation.html', context)
     else:
         return redirect('order')
