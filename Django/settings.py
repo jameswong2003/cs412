@@ -33,7 +33,8 @@ ALLOWED_HOSTS = ["tranquil-beyond-37748-efa323c997d4.herokuapp.com", 'localhost'
 
 INSTALLED_APPS = [
     # 'quotes',
-    'restaurant',
+    # 'restaurant',
+    'mini_fb',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

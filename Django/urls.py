@@ -20,5 +20,6 @@ from quotes import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('quotes/', include("quotes.urls")),
-    path('restaurant/', include("restaurant.urls"))
+    # path('restaurant/', include("restaurant.urls"))
+    path("mini_fb/", include("mini_fb.urls"))
 ]
