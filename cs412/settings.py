@@ -32,8 +32,8 @@ ALLOWED_HOSTS = ["tranquil-beyond-37748-efa323c997d4.herokuapp.com", 'localhost'
 # Application definition
 
 INSTALLED_APPS = [
-    # 'quotes',
-    # 'restaurant',
+    'quotes',
+    'restaurant',
     'mini_fb',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'Django.urls'
+ROOT_URLCONF = 'cs412.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Django.wsgi.application'
+WSGI_APPLICATION = 'cs412.wsgi.application'
 
 
 # Database
