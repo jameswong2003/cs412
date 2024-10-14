@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: antiquewhite;
 }
 
 header {
@@ -15,6 +16,11 @@ nav a {
     text-decoration: none;
 }
 
+a {
+    text-decoration: none;
+    color: blueviolet;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -25,6 +31,10 @@ th, td {
     padding: 8px;
     text-align: left;
 }
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+  }
 
 th {
     background-color: #f2f2f2;
