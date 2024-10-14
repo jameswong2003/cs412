@@ -3,9 +3,66 @@
 {% block title %}All Profiles{% endblock %}
 
 {% block content %}
-<h2>All Profiles</h2>
 
-<table>
+<style>
+    .profiles-table {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    .profiles-table th, .profiles-table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .profiles-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .profiles-table td {
+        background-color: #fff;
+        color: #333;
+    }
+
+    .profiles-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .profiles-table a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .profiles-table a:hover {
+        text-decoration: underline;
+    }
+
+    .profiles-table img {
+        border-radius: 50%;
+        border: 2px solid #ddd;
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+    }
+
+    .no-profiles {
+        text-align: center;
+        font-size: 18px;
+        color: #777;
+        padding: 20px;
+    }
+
+</style>
+
+<h2 style="text-align:center; margin-bottom: 20px;">All Profiles</h2>
+
+<table class="profiles-table">
     <thead>
         <tr>
             <th>Name</th>
@@ -24,15 +81,16 @@
             <td>{{ profile.city }}</td>
             <td>
                 <a href="{% url 'show_profile' profile.pk %}">
-                    <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile" width="100">
+                    <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile">
                 </a>
             </td>
         </tr>
     {% empty %}
         <tr>
-            <td colspan="4">No profiles found.</td>
+            <td colspan="3" class="no-profiles">No profiles found.</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+
 {% endblock %}

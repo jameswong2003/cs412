@@ -3,6 +3,63 @@
 {% block title %}Create Status Message{% endblock %}
 
 {% block content %}
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .form-container textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+
+    .form-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="form-container">
+    <h1>Create a New Status Message</h1>
+
     <form method="post" action="{% url 'create_status' profile.pk %}">
         {% csrf_token %}
 
@@ -15,5 +72,6 @@
             <button type="submit">Post Status</button>
         </div>
     </form>
+</div>
 
 {% endblock %}

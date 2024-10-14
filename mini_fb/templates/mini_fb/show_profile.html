@@ -3,28 +3,118 @@
 {% block title %}{{ profile.first_name }}'s Profile{% endblock %}
 
 {% block content %}
-<h2>{{ profile.first_name }} Profile</h2>
 
-<div>
-    <div>
-        <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile" width="200">
+<style>
+    .profile_page {
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        color: white;
+        padding: 20px;
+        background-color: darkolivegreen;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile_page h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .profile_info {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+
+    .profile_info img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 3px solid #ddd;
+    }
+
+    .profile_info h1 {
+        font-size: 28px;
+        margin: 0;
+    }
+
+    .profile_info h2 {
+        font-size: 18px;
+        margin: 5px 0;
+    }
+
+    .status_section {
+        margin-top: 30px;
+    }
+
+    .status_section h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .status_message {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .status_message p {
+        margin: 0;
+    }
+
+    .status_message span {
+        font-size: 12px;
+        color: #999;
+    }
+
+    a.create_status {
+        display: inline-block;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    a.create_status:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="profile_page">
+    <h2>{{ profile.first_name }}'s Profile</h2>
+
+    <div class="profile_info">
+        <div>
+            <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile">
+        </div>
+
+        <div>
+            <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+            <h2>{{ profile.city }}</h2>
+        </div>
     </div>
-
-    <div>
-        <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
-        <h2>{{ profile.city }}</h2>
-    </div>
-</div>
-
-<div>
-    <div>{{ profile.first_name }}'s Status Messages</div>
     
-    <p>
-        <a href="{% url 'create_status' profile.pk %}">Create a New Status Message</a>
-    </p>
-
-    {% for message in profile.get_status_messages %}
-        <p>{{ message.timestamp }}: {{ message.message }}</p>
-    {% endfor %}
+    <div class="status_section">
+        <h3>{{ profile.first_name }}'s Status Messages</h3>
+        
+        <p>
+            <a href="{% url 'create_status' profile.pk %}" class="create_status">Create a New Status Message</a>
+        </p>
+    
+        {% for message in profile.get_status_messages %}
+            <div class="status_message">
+                <p>{{ message.message }}</p>
+                <span>Posted on {{ message.timestamp }}</span>
+            </div>
+        {% endfor %}
+    </div>
 </div>
+
 {% endblock %}

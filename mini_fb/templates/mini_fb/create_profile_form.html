@@ -3,37 +3,92 @@
 {% block title %}Create Profile{% endblock %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
 
-    <div>
-        <label for="id_first_name">First Name:</label>
-        {{ form.first_name }}
-    </div>
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: darkolivegreen;
+        color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
 
-    <div>
-        <label for="id_last_name">Last Name:</label>
-        {{ form.last_name }}
-    </div>
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
 
-    <div>
-        <label for="id_city">City:</label>
-        {{ form.city }}
-    </div>
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
 
-    <div>
-        <label for="id_email">Email:</label>
-        {{ form.email }}
-    </div>
+    .form-container input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
 
-    <div>
-        <label for="id_profile_image_url">Profile Image URL:</label>
-        {{ form.profile_image_url }}
-    </div>
+    .form-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-    <div>
-        <button type="submit">Create Profile</button>
-    </div>
-</form>
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="form-container">
+    <h1>Create a New Profile</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <label for="id_first_name">First Name:</label>
+            {{ form.first_name }}
+        </div>
+
+        <div>
+            <label for="id_last_name">Last Name:</label>
+            {{ form.last_name }}
+        </div>
+
+        <div>
+            <label for="id_city">City:</label>
+            {{ form.city }}
+        </div>
+
+        <div>
+            <label for="id_email">Email:</label>
+            {{ form.email }}
+        </div>
+
+        <div>
+            <label for="id_profile_image_url">Profile Image URL:</label>
+            {{ form.profile_image_url }}
+        </div>
+
+        <div>
+            <button type="submit">Create Profile</button>
+        </div>
+    </form>
+</div>
 
 {% endblock %}
