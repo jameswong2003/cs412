@@ -19,6 +19,10 @@
 <div>
     <div>{{ profile.first_name }}'s Status Messages</div>
     
+    <p>
+        <a href="{% url 'create_status' profile.pk %}">Create a New Status Message</a>
+    </p>
+
     {% for message in profile.get_status_messages %}
         <p>{{ message.timestamp }}: {{ message.message }}</p>
     {% endfor %}
