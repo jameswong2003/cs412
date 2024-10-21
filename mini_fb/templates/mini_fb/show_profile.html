@@ -56,7 +56,7 @@
     }
 
     .status_message {
-        background-color: #fff;
+        background-color: black;
         padding: 10px;
         border-radius: 5px;
         margin-bottom: 10px;
@@ -112,6 +112,15 @@
             <div class="status_message">
                 <p>{{ message.message }}</p>
                 <span>Posted on {{ message.timestamp }}</span>
+
+                <!-- Display images if they exist -->
+                {% if message.get_images %}
+                    <div class="status-images">
+                        {% for img in message.get_images %}
+                            <img src="{{ img.image_file.url }}" alt="Image for {{ message.profile.first_name }}'s status">
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
