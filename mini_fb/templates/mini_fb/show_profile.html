@@ -89,6 +89,21 @@
     img {
         width: 300px;
     }
+
+    .update_profile {
+        display: inline-block;
+        margin-top: 10px;
+        background-color: #28a745;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .update_profile:hover {
+        background-color: #218838;
+    }
 </style>
 
 <div class="profile_page">
@@ -102,6 +117,10 @@
         <div>
             <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
             <h2>{{ profile.city }}</h2>
+
+            <p>
+                <a href="{% url 'update_profile' profile.pk %}" class="update_profile">Update Profile</a>
+            </p>
         </div>
     </div>
     
