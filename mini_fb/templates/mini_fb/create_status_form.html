@@ -40,6 +40,11 @@
         resize: vertical;
     }
 
+    .form-container input[type="file"] {
+        display: block;
+        margin-bottom: 15px;
+    }
+
     .form-container button {
         width: 100%;
         padding: 10px;
@@ -60,12 +65,19 @@
 <div class="form-container">
     <h1>Create a New Status Message</h1>
 
-    <form method="post" action="{% url 'create_status' profile.pk %}">
+    <!-- Add enctype attribute to allow file uploads -->
+    <form method="post" action="{% url 'create_status' profile.pk %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div>
             <label for="id_message">Status Message:</label>
             {{ form.message }}
+        </div>
+
+        <!-- Add the file input to allow multiple image uploads -->
+        <div>
+            <label for="files">Upload Images:</label>
+            <input type="file" name="files" multiple />
         </div>
 
         <div>
