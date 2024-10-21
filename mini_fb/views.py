@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile, StatusMessage, Image
-from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
+from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm, UpdateStatusMessageForm
 
 # Create your views here.
 
@@ -61,4 +61,29 @@ class UpdateProfileView(UpdateView):
 
     def get_success_url(self):
         profile_pk = self.kwargs['pk']
+        return reverse_lazy('show_profile', kwargs={'pk': profile_pk})
+    
+class DeleteStatusMessageView(DeleteView):
+    model = StatusMessage
+    template_name = 'mini_fb/delete_status_form.html'
+    context_object_name = 'status_message'
+
+    def get_success_url(self):
+        # Get the profile associated with the StatusMessage
+        status_message = self.get_object()
+        profile_pk = status_message.profile.pk
+        
+        # Redirect to the profile page after deletion
+        return reverse_lazy('show_profile', kwargs={'pk': profile_pk})
+    
+class UpdateStatusMessageView(UpdateView):
+    model = StatusMessage
+    form_class = UpdateStatusMessageForm
+    template_name = 'mini_fb/update_status_form.html'
+    context_object_name = 'status_message'
+
+    def get_success_url(self):
+        # After updating, redirect back to the profile page of the user who owns the status message
+        status_message = self.get_object()
+        profile_pk = status_message.profile.pk
         return reverse_lazy('show_profile', kwargs={'pk': profile_pk})

@@ -1,0 +1,102 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block title %}Update Status Message{% endblock %}
+
+{% block content %}
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #3e4e3e;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
+        color: white;
+    }
+
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .form-container form {
+        margin-bottom: 20px;
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #ddd;
+    }
+
+    .form-container textarea {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: #fff;
+        color: #333;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+    }
+
+    .form-container button {
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .form-container button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .form-container button[type="submit"]:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .form-container button[type="submit"].cancel {
+        background-color: red;
+        margin-top: 10px;
+    }
+
+    .form-container button[type="submit"].cancel:hover {
+        background-color: darkred;
+        transform: translateY(-2px);
+    }
+
+    .form-container form.cancel-form {
+        margin-top: 10px;
+    }
+</style>
+
+<div class="form-container">
+    <h1>Update Your Status Message</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <!-- Form to submit the updated status message -->
+        <button type="submit">Update Status</button>
+    </form>
+
+    <!-- Form to cancel and go back to the profile page -->
+    <form method="get" action="{% url 'show_profile' status_message.profile.pk %}" class="cancel-form">
+        <button type="submit" class="cancel">Cancel</button>
+    </form>
+</div>
+
+{% endblock %}
