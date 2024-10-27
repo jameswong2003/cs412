@@ -32,6 +32,16 @@ class Profile(models.Model):
 
         return friends_profiles
     
+    def get_news_feed(self):
+        # Get a list of friend profiles and add the profile itself to the list
+        friend_profiles = self.get_friends()
+        all_profiles = [self] + friend_profiles
+
+        # Fetch all status messages for the current profile and their friends, ordered by timestamp
+        news_feed = StatusMessage.objects.filter(profile__in=all_profiles).order_by('-timestamp')
+
+        return news_feed
+    
     def get_friend_suggestions(self):
         # Get the current friends of this profile
         current_friends = self.get_friends()

@@ -1,0 +1,94 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block title %}{{ profile.first_name }}'s News Feed{% endblock %}
+
+{% block content %}
+<style>
+    .news_feed {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .news_feed h2 {
+        font-size: 26px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .status_message {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status_message img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+        border: 2px solid #007bff;
+    }
+
+    .status_content {
+        flex-grow: 1;
+    }
+
+    .status_content h3 {
+        font-size: 18px;
+        color: #333;
+        margin: 0;
+    }
+
+    .status_content p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .back_link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #e2e2e2;
+        transition: background-color 0.3s ease;
+    }
+
+    .back_link:hover {
+        background-color: #ccc;
+    }
+</style>
+
+<div class="news_feed">
+    <h2>{{ profile.first_name }}'s News Feed</h2>
+
+    {% for message in news_feed %}
+        <div class="status_message">
+            <img src="{{ message.profile.profile_image_url }}" alt="{{ message.profile.first_name }}'s profile">
+            <div class="status_content">
+                <h3>{{ message.profile.first_name }} {{ message.profile.last_name }}</h3>
+                <p>{{ message.message }}</p>
+                <small>Posted on {{ message.timestamp|date:"Y-m-d H:i" }}</small>
+            </div>
+        </div>
+    {% empty %}
+        <p style="text-align: center; color: #666;">No status messages to display.</p>
+    {% endfor %}
+
+    <a href="{% url 'show_profile' profile.pk %}" class="back_link">Back to Profile</a>
+</div>
+{% endblock %}

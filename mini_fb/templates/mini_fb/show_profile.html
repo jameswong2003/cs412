@@ -51,6 +51,42 @@
         color: #ddd;
     }
 
+    .action_buttons {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .action_buttons a {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-align: center;
+    }
+
+    .friend_suggestions_btn {
+        background-color: #007bff;
+    }
+
+    .friend_suggestions_btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .news_feed_btn {
+        background-color: #17a2b8;
+    }
+
+    .news_feed_btn:hover {
+        background-color: #138496;
+        transform: translateY(-2px);
+    }
+
     .status_section {
         margin-top: 40px;
     }
@@ -206,9 +242,11 @@
         </div>
     </div>
     
-    <p>
-        <a href="{% url 'friend_suggestions' profile.pk %}">View Friend Suggestions</a>
-    </p>
+    <!-- Action Buttons for Friend Suggestions and News Feed -->
+    <div class="action_buttons">
+        <a href="{% url 'friend_suggestions' profile.pk %}" class="friend_suggestions_btn">View Friend Suggestions</a>
+        <a href="{% url 'news_feed' profile.pk %}" class="news_feed_btn">View News Feed</a>
+    </div>
 
     <!-- Friends Section -->
     <div class="friends_section">
