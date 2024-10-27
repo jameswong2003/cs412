@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, StatusMessage, Image
+from .models import Profile, StatusMessage, Image, Friend
 
 # Register your models here.
 @admin.register(Profile)
@@ -13,3 +13,7 @@ class StatusMessageAdmin(admin.ModelAdmin):
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ('image_file', 'timestamp', 'status_message')
+
+@admin.register(Friend)
+class FriendAdmin(admin.ModelAdmin):
+    list_display = ('profile1', 'profile2', 'timestamp')

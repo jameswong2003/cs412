@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
-# Create your models here.
 class Profile(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -16,6 +15,22 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('show_profile', kwargs={'pk': self.pk})
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def get_friends(self):
+        # Find all Friend instances where this Profile is either profile1 or profile2
+        friends_as_profile1 = Friend.objects.filter(profile1=self)
+        friends_as_profile2 = Friend.objects.filter(profile2=self)
+
+        # Collect the other profile in each Friend relation
+        friends_profiles = [
+            friend.profile2 for friend in friends_as_profile1
+        ] + [
+            friend.profile1 for friend in friends_as_profile2
+        ]
+
+        return friends_profiles
 
 class StatusMessage(models.Model):
     message = models.TextField()
@@ -35,3 +50,12 @@ class Image(models.Model):
 
     def __str__(self):
         return f"Image for {self.status_message.profile.first_name}'s status at {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}"
+
+
+class Friend(models.Model):
+    profile1 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="friends_as_profile1")
+    profile2 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="friends_as_profile2")
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.profile1.first_name} {self.profile1.last_name} & {self.profile2.first_name} {self.profile2.last_name}"
