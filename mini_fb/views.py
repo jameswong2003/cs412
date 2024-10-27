@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Profile, StatusMessage, Image
 from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm, UpdateStatusMessageForm
 
@@ -87,3 +87,29 @@ class UpdateStatusMessageView(UpdateView):
         status_message = self.get_object()
         profile_pk = status_message.profile.pk
         return reverse_lazy('show_profile', kwargs={'pk': profile_pk})
+
+class CreateFriendView(View):
+    def dispatch(self, request, *args, **kwargs):
+        # Extract the profile IDs from the URL parameters
+        pk = kwargs.get('pk')
+        other_pk = kwargs.get('other_pk')
+
+        # Retrieve the Profile instances
+        profile = get_object_or_404(Profile, pk=pk)
+        other_profile = get_object_or_404(Profile, pk=other_pk)
+
+        # Add the friend relationship
+        profile.add_friend(other_profile)
+
+        # Redirect back to the profile page
+        return redirect('show_profile', pk=pk)
+    
+class ShowFriendSuggestionsView(DetailView):
+    model = Profile
+    template_name = 'mini_fb/friend_suggestions.html'
+    context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['friend_suggestions'] = self.object.get_friend_suggestions()
+        return context
