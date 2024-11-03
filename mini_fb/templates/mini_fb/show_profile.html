@@ -236,16 +236,20 @@
             <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
             <h2>{{ profile.city }}</h2>
 
-            <p>
-                <a href="{% url 'update_profile' profile.pk %}" class="update_profile">Update Profile</a>
-            </p>
+            {% if user.is_authenticated and user == profile.user %}
+                <p>
+                    <a href="{% url 'update_profile' profile.pk %}" class="update_profile">Update Profile</a>
+                </p>
+            {% endif %}
         </div>
     </div>
     
     <!-- Action Buttons for Friend Suggestions and News Feed -->
     <div class="action_buttons">
-        <a href="{% url 'friend_suggestions' profile.pk %}" class="friend_suggestions_btn">View Friend Suggestions</a>
-        <a href="{% url 'news_feed' profile.pk %}" class="news_feed_btn">View News Feed</a>
+        {% if user.is_authenticated and user == profile.user %}
+            <a href="{% url 'friend_suggestions' profile.pk %}" class="friend_suggestions_btn">View Friend Suggestions</a>
+            <a href="{% url 'news_feed' profile.pk %}" class="news_feed_btn">View News Feed</a>
+        {% endif %}
     </div>
 
     <!-- Friends Section -->
@@ -265,22 +269,27 @@
         </div>
     </div>
     
+    <!-- Status Section -->
     <div class="status_section">
         <h3>{{ profile.first_name }}'s Status Messages</h3>
         
-        <p>
-            <a href="{% url 'create_status' profile.pk %}" class="create_status">Create a New Status Message</a>
-        </p>
+        {% if user.is_authenticated and user == profile.user %}
+            <p>
+                <a href="{% url 'create_status' profile.pk %}" class="create_status">Create a New Status Message</a>
+            </p>
+        {% endif %}
     
         {% for message in profile.get_status_messages %}
             <div class="status_message">
                 <p>{{ message.message }}</p>
                 <span>Posted on {{ message.timestamp }}</span>
 
-                <p>
-                    <a href="{% url 'delete_status_form' message.pk %}" class="delete_status">Delete</a>
-                    <a href="{% url 'update_status_message' message.pk %}" class="update_status">Update</a>
-                </p>
+                {% if user.is_authenticated and user == profile.user %}
+                    <p>
+                        <a href="{% url 'delete_status_form' message.pk %}" class="delete_status">Delete</a>
+                        <a href="{% url 'update_status_message' message.pk %}" class="update_status">Update</a>
+                    </p>
+                {% endif %}
 
                 {% if message.get_images %}
                     <div class="status-images">

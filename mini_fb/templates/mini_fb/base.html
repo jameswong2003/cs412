@@ -13,6 +13,10 @@
         <nav>
             <a href="/mini_fb/">Home</a>
             <a href="/mini_fb/create_profile/">Create Profile</a>
+            
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.username }}!</span>
+            {% endif %}
         </nav>
     </header>
 
