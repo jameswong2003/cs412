@@ -11,11 +11,23 @@
     <header>
         <h1>My Social Media App</h1>
         <nav>
-            <a href="/mini_fb/">Home</a>
-            <a href="/mini_fb/create_profile/">Create Profile</a>
-            
+            <a href="{% url 'show_all_profiles' %}">Home</a>
+
             {% if user.is_authenticated %}
                 <span>Welcome, {{ user.username }}!</span>
+
+                {% if user.profile %}
+                    <a href="{% url 'show_profile' user.profile.pk %}">My Profile</a>
+                {% else %}
+                    <a href="{% url 'create_profile' %}">Create Profile</a>
+                {% endif %}
+
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
             {% endif %}
         </nav>
     </header>
