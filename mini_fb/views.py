@@ -4,6 +4,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Profile, StatusMessage, Image
 from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm, UpdateStatusMessageForm
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render
 
 # Public views
 
@@ -17,10 +19,49 @@ class ShowProfilePageView(DetailView):
     template_name = 'mini_fb/show_profile.html'
     context_object_name = 'profile'
 
+
 class CreateProfileView(CreateView):
     model = Profile
     form_class = CreateProfileForm
     template_name = 'mini_fb/create_profile_form.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add UserCreationForm to the context
+        context['user_form'] = UserCreationForm()
+        return context
+
+    def form_valid(self, form):
+        # Reconstruct the UserCreationForm with the POST data
+        user_form = UserCreationForm(self.request.POST)
+
+        if user_form.is_valid():
+            # Save the User instance
+            user = user_form.save()
+
+            # Assign the newly created user to the profile instance
+            form.instance.user = user
+
+            # Save the Profile instance and delegate the rest to the superclass
+            return super().form_valid(form)
+        else:
+            # If the user form is invalid, render the template with errors
+            return self.form_invalid(form)
+
+    def post(self, request, *args, **kwargs):
+        # Handle both UserCreationForm and CreateProfileForm in the post method
+        self.object = None
+        form = self.get_form()
+        user_form = UserCreationForm(request.POST)
+
+        if form.is_valid() and user_form.is_valid():
+            return self.form_valid(form)
+        else:
+            return render(request, self.template_name, {
+                'form': form,
+                'user_form': user_form,
+            })
 
 # Restricted views (require login)
 
