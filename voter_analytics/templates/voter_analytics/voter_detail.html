@@ -1,0 +1,91 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+<h1>{{ voter.first_name }} {{ voter.last_name }}</h1>
+
+<div class="voter-info">
+    <p><strong>Address:</strong> {{ voter.residential_street_number }} {{ voter.residential_street_name }}{% if voter.residential_apartment_number %}, Apt {{ voter.residential_apartment_number }}{% endif %}, {{ voter.residential_zip_code }}</p>
+    <p><strong>Birth Date:</strong> {{ voter.date_of_birth }}</p>
+    <p><strong>Registration Date:</strong> {{ voter.date_of_registration }}</p>
+    <p><strong>Party Affiliation:</strong> {{ voter.party_affiliation }}</p>
+    <p><strong>Precinct Number:</strong> {{ voter.precinct_number }}</p>
+    <p><strong>Voter Score:</strong> {{ voter.voter_score }}</p>
+</div>
+
+<h2>Past Elections Participation</h2>
+<ul class="participation-list">
+    <li>Voted in 2020 State: {{ voter.v20state }}</li>
+    <li>Voted in 2021 Town: {{ voter.v21town }}</li>
+    <li>Voted in 2021 Primary: {{ voter.v21primary }}</li>
+    <li>Voted in 2022 General: {{ voter.v22general }}</li>
+    <li>Voted in 2023 Town: {{ voter.v23town }}</li>
+</ul>
+
+<h2>Visit Voter</h2>
+<p>
+    <a href="https://www.google.com/maps/search/?api=1&query={{ voter.residential_street_number }}+{{ voter.residential_street_name }}+{{ voter.residential_zip_code }}" target="_blank" class="map-link">
+        View on Google Maps
+    </a>
+</p>
+
+<p><a href="{% url 'voters' %}" class="back-link">Back to Voter List</a></p>
+
+<style>
+    /* Voter Info Section */
+    .voter-info {
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .voter-info p {
+        margin: 10px 0;
+        color: #333;
+    }
+
+    /* Participation List */
+    .participation-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+    }
+
+    .participation-list li {
+        background-color: #e9ecef;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+    }
+
+    /* Google Maps Link */
+    .map-link {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .map-link:hover {
+        background-color: #0056b3;
+    }
+
+    /* Back Link */
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

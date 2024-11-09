@@ -1,0 +1,204 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+<h1>Voter Records</h1>
+
+<form method="get" class="filter-form">
+    <fieldset>
+        <legend>Filter Voters</legend>
+
+        <div class="form-group">
+            <label for="party_affiliation">Party Affiliation:</label>
+            {{ form.party_affiliation }}
+        </div>
+
+        <div class="form-group">
+            <label for="min_date_of_birth">Minimum Date of Birth (Year):</label>
+            {{ form.min_date_of_birth }}
+        </div>
+
+        <div class="form-group">
+            <label for="max_date_of_birth">Maximum Date of Birth (Year):</label>
+            {{ form.max_date_of_birth }}
+        </div>
+
+        <div class="form-group">
+            <label for="voter_score">Voter Score:</label>
+            {{ form.voter_score }}
+        </div>
+
+        <div class="form-group">
+            <label for="v20state">Voted in 2020 State:</label>
+            {{ form.v20state }}
+        </div>
+
+        <div class="form-group">
+            <label for="v21town">Voted in 2021 Town:</label>
+            {{ form.v21town }}
+        </div>
+
+        <div class="form-group">
+            <label for="v21primary">Voted in 2021 Primary:</label>
+            {{ form.v21primary }}
+        </div>
+
+        <div class="form-group">
+            <label for="v22general">Voted in 2022 General:</label>
+            {{ form.v22general }}
+        </div>
+
+        <div class="form-group">
+            <label for="v23town">Voted in 2023 Town:</label>
+            {{ form.v23town }}
+        </div>
+        
+        <button type="submit" class="filter-button">Filter</button>
+    </fieldset>
+</form>
+
+<table class="voter-table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Date of Birth</th>
+            <th>Party Affiliation</th>
+            <th>Voter Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for voter in voters %}
+        <tr>
+            <td><a href="{% url 'voter' voter.pk %}">{{ voter.first_name }}</a></td>
+            <td>{{ voter.last_name }}</td>
+            <td>{{ voter.residential_street_number }} {{ voter.residential_street_name }}</td>
+            <td>{{ voter.date_of_birth }}</td>
+            <td>{{ voter.party_affiliation }}</td>
+            <td>{{ voter.voter_score }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>    
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if voters.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ voters.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ voters.number }} of {{ voters.paginator.num_pages }}
+        </span>
+
+        {% if voters.has_next %}
+            <a href="?page={{ voters.next_page_number }}">next</a>
+            <a href="?page={{ voters.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+<style>
+    /* Filter form styling */
+    .filter-form {
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-form fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .filter-form legend {
+        font-size: 1.2em;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .filter-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Voter table styling */
+    .voter-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .voter-table thead {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .voter-table th, .voter-table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .voter-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Pagination styling */
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination .step-links a {
+        color: #007bff;
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        margin: 0 2px;
+        border-radius: 4px;
+        background-color: #f8f9fa;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination .step-links a:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination .current {
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

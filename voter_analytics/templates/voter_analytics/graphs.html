@@ -1,0 +1,153 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+<h1>Voter Data Analysis</h1>
+
+<form method="get" class="filter-form">
+    <fieldset>
+        <legend>Filter Voters</legend>
+
+        <div class="form-group">
+            <label for="party_affiliation">Party Affiliation:</label>
+            {{ form.party_affiliation }}
+        </div>
+
+        <div class="form-group">
+            <label for="min_date_of_birth">Minimum Date of Birth (Year):</label>
+            {{ form.min_date_of_birth }}
+        </div>
+
+        <div class="form-group">
+            <label for="max_date_of_birth">Maximum Date of Birth (Year):</label>
+            {{ form.max_date_of_birth }}
+        </div>
+
+        <div class="form-group">
+            <label for="voter_score">Voter Score:</label>
+            {{ form.voter_score }}
+        </div>
+
+        <div class="form-group">
+            <label for="v20state">Voted in 2020 State:</label>
+            {{ form.v20state }}
+        </div>
+
+        <div class="form-group">
+            <label for="v21town">Voted in 2021 Town:</label>
+            {{ form.v21town }}
+        </div>
+
+        <div class="form-group">
+            <label for="v21primary">Voted in 2021 Primary:</label>
+            {{ form.v21primary }}
+        </div>
+
+        <div class="form-group">
+            <label for="v22general">Voted in 2022 General:</label>
+            {{ form.v22general }}
+        </div>
+
+        <div class="form-group">
+            <label for="v23town">Voted in 2023 Town:</label>
+            {{ form.v23town }}
+        </div>
+        
+        <button type="submit" class="filter-button">Filter</button>
+    </fieldset>
+</form>
+
+<div class="chart-section">
+    <h2>Distribution of Voters by Year of Birth</h2>
+    {{ birth_year_chart|safe }}
+</div>
+
+<div class="chart-section">
+    <h2>Distribution of Voters by Party Affiliation</h2>
+    {{ party_chart|safe }}
+</div>
+
+<div class="chart-section">
+    <h2>Voter Participation in Elections</h2>
+    {{ election_participation_chart|safe }}
+</div>
+
+<p><a href="{% url 'voters' %}" class="back-link">Back to Voter List</a></p>
+
+<style>
+    /* Styling for the filter form */
+    .filter-form {
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-form fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .filter-form legend {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .filter-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Styling for chart sections */
+    .chart-section {
+        margin-top: 30px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-section h2 {
+        font-size: 1.2em;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    /* Back link styling */
+    .back-link {
+        display: inline-block;
+        margin-top: 30px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
