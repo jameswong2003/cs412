@@ -1,6 +1,11 @@
 from django.urls import path
-from .views import show_profiles
+from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', show_profiles, name='show_profiles'),
+    path('', views.show_profiles, name='home'),
+
+    path('login/', views.user_login, name='login'),
+    path('signup/', views.user_signup, name='signup'),
+    path('logout/', views.user_logout, name='logout'),
 ]

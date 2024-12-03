@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profiles</title>
-</head>
-<body>
-    <h1>User Profiles</h1>
+{% extends 'project/base.html' %}
+
+{% block title %}Marketplace{% endblock %}
+
+{% block content %}
+
+<div>
     <ul>
         {% for profile in profiles %}
             <li>
@@ -14,6 +12,7 @@
                 Date of Birth: {{ profile.date_of_birth }}
             </li>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </ul>    
+</div>
+
+{% endblock %}
