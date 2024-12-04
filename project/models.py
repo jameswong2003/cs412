@@ -10,6 +10,7 @@ class Business(models.Model):
 
 class Product(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
+    picture_url = models.TextField(blank=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)

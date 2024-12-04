@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'quotes',
     'restaurant',
     'mini_fb',
-    'voter_analytics',
+    # 'voter_analytics',
     'project',
     'django.contrib.admin',
     'django.contrib.auth',
