@@ -143,3 +143,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Login for Project
 LOGIN_URL = '/project/login/'
+LOGIN_REDIRECT_URL = 'index'

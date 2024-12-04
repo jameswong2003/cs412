@@ -1,0 +1,15 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+<p>Price: ${{ product.price }}</p>
+{% if user.is_authenticated %}
+    <form action="{% url 'purchase_product' product.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Purchase</button>
+    </form>
+{% else %}
+    <p>You must be logged in to purchase this product.</p>
+{% endif %}
+{% endblock %}

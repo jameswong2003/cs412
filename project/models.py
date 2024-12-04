@@ -1,56 +1,26 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Business Model
 class Business(models.Model):
-    name = models.CharField(max_length=100)
-    date_of_establishment = models.DateField()
+    name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
-
-# User Model
-class User(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    date_of_birth = models.DateField()
-    business = models.ForeignKey(
-        Business, on_delete=models.CASCADE, related_name='users'
-    )
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-
-# Product Model
 class Product(models.Model):
-    name = models.CharField(max_length=100)
-    picture = models.TextField()
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.TextField()
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='products'
-    )
-    business = models.ForeignKey(
-        Business, on_delete=models.CASCADE, related_name='products'
-    )
 
     def __str__(self):
         return self.name
 
-
-# Transaction Model
 class Transaction(models.Model):
-    date_of_transaction = models.DateField()
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='transactions'
-    )
-    sold_by = models.ForeignKey(
-        Business, on_delete=models.CASCADE, related_name='sales'
-    )
-    bought_by = models.ForeignKey(
-        Business, on_delete=models.CASCADE, related_name='purchases'
-    )
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    transaction_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Transaction on {self.date_of_transaction}"
+        return f'{self.buyer.username} bought {self.product.name}'
