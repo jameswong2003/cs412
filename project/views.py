@@ -14,6 +14,15 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'project/product_detail.html', {'product': product})
 
+def transactions(request):
+    # Get all transactions and sort them by transaction_date in descending order
+    transactions = Transaction.objects.all().order_by('-transaction_date')
+
+    context = {
+        'transactions': transactions,
+    }
+    return render(request, 'project/transactions.html', context)
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -30,7 +39,11 @@ def signup(request):
 @login_required
 def purchase_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    Transaction.objects.create(buyer=request.user, product=product)
+    
+    if request.method == 'POST':
+        amount = int(request.POST.get('amount', 1))
+        Transaction.objects.create(buyer=request.user, product=product, amount=amount)
+        
     return redirect('index')
 
 @login_required
@@ -52,6 +65,23 @@ def add_product(request):
 
     return render(request, 'project/add_product.html', {'form': form})
 
+@login_required
+def edit_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    # Check if the logged-in user owns the business associated with this product
+    if product.business.owner != request.user:
+        return redirect('profile')  # Redirect if the user doesn't own the product
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after saving
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'project/edit_product.html', {'form': form, 'product': product})
 
 @login_required
 def create_business(request):
@@ -65,3 +95,42 @@ def create_business(request):
     else:
         form = BusinessForm()
     return render(request, 'project/create_business.html', {'form': form})
+
+@login_required
+def profile(request):
+    try:
+        # Get the business owned by the logged-in user
+        business = Business.objects.get(owner=request.user)
+        # Get all products associated with the business
+        products = Product.objects.filter(business=business)
+    except Business.DoesNotExist:
+        # If the user doesn't own a business, set business and products to None
+        business = None
+        products = None
+
+    # Get the transactions made by the user
+    transactions = Transaction.objects.filter(buyer=request.user)
+
+    context = {
+        'business': business,
+        'products': products,
+        'transactions': transactions,
+    }
+    return render(request, 'project/profile.html', context)
+
+@login_required
+def edit_business(request):
+    try:
+        business = Business.objects.get(owner=request.user)
+    except Business.DoesNotExist:
+        return redirect('create_business')
+
+    if request.method == 'POST':
+        form = BusinessForm(request.POST, instance=business)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = BusinessForm(instance=business)
+
+    return render(request, 'project/edit_business.html', {'form': form})

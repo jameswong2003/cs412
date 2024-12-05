@@ -1,16 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Simple Shop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Businesses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background: #0073e6;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        nav {
+            margin: 10px 0;
+        }
+
+        main {
+            padding: 20px;
+            margin: auto;
+            background: #f4f4f9;
+        }
+    </style>
 </head>
+
 <body>
-    {% if user.is_authenticated %}
-        <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
-    {% else %}
-        <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a></p>
-    {% endif %}
-    <hr>
-    {% block content %}
-    {% endblock %}
+    <header>
+        <nav>
+            {% if user.is_authenticated %}
+            <p>
+                Welcome, {{ user.username }} |
+                <a href="{% url 'profile' %}">Profile</a> |
+                <a href="{% url 'add_product' %}">Add Product</a> |
+                <a href="{% url 'logout' %}">Logout</a>
+            </p>
+            {% else %}
+            <p>
+                <a href="{% url 'login' %}">Login</a> |
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </p>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 </body>
+
 </html>

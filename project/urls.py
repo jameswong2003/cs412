@@ -5,12 +5,19 @@ from project import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('profile/', views.profile, name='profile'),
     path('product/<int:pk>/', views.product_detail, name='product_detail'),
     path('purchase/<int:pk>/', views.purchase_product, name='purchase_product'),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('add_product/', views.add_product, name='add_product'),
-    path('create_business/', views.create_business, name='create_business'),
 
+    path('add_product/', views.add_product, name='add_product'),
+    path('edit_product/<int:pk>/', views.edit_product, name='edit_product'),
+
+    path('create_business/', views.create_business, name='create_business'),
+    path('edit_business/', views.edit_business, name='edit_business'),
+    
+    path('transactions/', views.transactions, name='transactions'),
+
+    path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),

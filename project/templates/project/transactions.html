@@ -1,0 +1,36 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h1>Transactions</h1>
+
+<p>
+    Sort by:
+    <a href="?sort=transaction_date">Oldest First</a> |
+    <a href="?sort=-transaction_date">Newest First</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Buyer</th>
+            <th>Product</th>
+            <th>Business</th>
+            <th>Amount</th>
+            <th>Transaction Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.buyer.username }}</td>
+                <td>{{ transaction.product.name }}</td>
+                <td>{{ transaction.product.business.name }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.transaction_date|date:"F j, Y, g:i a" }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

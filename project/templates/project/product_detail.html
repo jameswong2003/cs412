@@ -1,15 +1,97 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>{{ product.name }}</h1>
-<p>{{ product.description }}</p>
-<p>Price: ${{ product.price }}</p>
-{% if user.is_authenticated %}
-    <form action="{% url 'purchase_product' product.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Purchase</button>
-    </form>
-{% else %}
-    <p>You must be logged in to purchase this product.</p>
-{% endif %}
+<style>
+    .productDetails {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        display: flex;
+    }
+
+    .productDetails img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .productDisplay {
+        margin: 0 20px;
+    }
+
+    .productDetails h1 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .productDetails p {
+        font-size: 1rem;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .productDetails .price {
+        font-size: 1.5rem;
+        color: #0073e6;
+        font-weight: bold;
+    }
+
+    .productDetails form {
+        margin-top: 20px;
+    }
+
+    .productDetails button {
+        display: inline-block;
+        background-color: #0073e6;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .productDetails button:hover {
+        background-color: #005bb5;
+    }
+
+    .productDetails .loginMessage {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: #d9534f;
+    }
+</style>
+
+<div class="productDetails">
+    <div class="productDisplay">
+        <img src="{{ product.picture_url }}" alt="{{ product.name }}" />
+    </div>
+
+    <div class="productDisplay">
+        <h1>{{ product.name }}</h1>
+        <p>{{ product.description }}</p>
+
+        <p class="price">Price: ${{ product.price }}</p>
+        {% if user.is_authenticated %}
+            <form action="{% url 'purchase_product' product.pk %}" method="post">
+                {% csrf_token %}
+                <label for="amount">Quantity:</label>
+                <input type="number" name="amount" id="amount" value="1" min="1">
+                <button type="submit">Purchase</button>
+            </form>
+        {% else %}
+            <p>You must be logged in to purchase this product.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

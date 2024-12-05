@@ -1,0 +1,120 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .profile-container h1, h2, h3 {
+        color: #333;
+    }
+
+    .profile-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .profile-container h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .profile-container h3 {
+        font-size: 1.2rem;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #0073e6;
+    }
+
+    .profile-container p {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .products-list, .transactions-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .products-list li, .transactions-list li {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .products-list li strong, .transactions-list li strong {
+        color: #0073e6;
+    }
+
+    .profile-container a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #0073e6;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .profile-container a:hover {
+        background-color: #005bb5;
+    }
+</style>
+
+<div class="profile-container">
+    <h1>Profile</h1>
+
+    <h2>{{ user.first_name }} {{user.last_name}}</h2>
+    <h3>{{ user.username }}</h3>
+
+    {% if business %}
+        <h3>Your Business:</h3>
+        <p><strong>Name:</strong> {{ business.name }}</p>
+        <p><strong>Description:</strong> {{ business.description }}</p>
+        <a href="{% url 'edit_business' %}">Edit Your Business</a>
+
+        <h3>Your Products:</h3>
+        <ul class="products-list">
+            {% for product in products %}
+                <li>
+                    <strong>{{ product.name }}</strong> - ${{ product.price }}
+                    <br>
+                    <small>{{ product.description }}</small>
+                    <br>
+                    <a href="{% url 'edit_product' product.pk %}">Edit</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_product' %}">Add a New Product</a>
+    {% else %}
+        <p>You don't own a business yet. <a href="{% url 'create_business' %}">Create a Business</a></p>
+    {% endif %}
+
+    <h3>Your Transactions:</h3>
+    <ul class="transactions-list">
+        {% for transaction in transactions %}
+            <li>
+                <strong>Bought {{ transaction.product.name }}</strong>
+                <br>
+                From: {{ transaction.product.business.name }}
+                <br>
+                Date: {{ transaction.transaction_date|date:"F j, Y, g:i a" }}
+            </li>
+        {% empty %}
+            <p>You haven't made any purchases yet.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
