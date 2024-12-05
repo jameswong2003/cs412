@@ -21,6 +21,7 @@ class Product(models.Model):
 class Transaction(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
     transaction_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
