@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.db.models import Q
 
 from .models import Product, Transaction, Business
 from .forms import ProductForm, BusinessForm
@@ -15,11 +16,24 @@ def product_detail(request, pk):
     return render(request, 'project/product_detail.html', {'product': product})
 
 def transactions(request):
-    # Get all transactions and sort them by transaction_date in descending order
-    transactions = Transaction.objects.all().order_by('-transaction_date')
+    # Get all transactions
+    transactions = Transaction.objects.all()
+
+    # Get query parameters
+    company_name = request.GET.get('company_name', '')
+    sort = request.GET.get('sort', '-transaction_date')  # Default to newest first
+
+    # Filter by company name if provided
+    if company_name:
+        transactions = transactions.filter(product__business__name__icontains=company_name)
+
+    # Apply sorting
+    transactions = transactions.order_by(sort)
 
     context = {
         'transactions': transactions,
+        'company_name': company_name,
+        'sort': sort,
     }
     return render(request, 'project/transactions.html', context)
 

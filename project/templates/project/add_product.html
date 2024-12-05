@@ -1,10 +1,67 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>Add Product</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Product</button>
-</form>
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .form-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container form label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-container form input,
+    .form-container form textarea {
+        margin-bottom: 15px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .form-container form button {
+        background-color: #0073e6;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        align-self: center;
+    }
+
+    .form-container form button:hover {
+        background-color: #005bb5;
+    }
+</style>
+
+<div class="form-container">
+    <h1>Add Product</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Product</button>
+    </form>
+</div>
 {% endblock %}

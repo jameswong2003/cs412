@@ -2,6 +2,9 @@
 
 {% block content %}
 <style>
+    h1 {
+        text-align: center;
+    }
     .productsDiv {
         display: flex;
         flex-wrap: wrap;
@@ -37,6 +40,13 @@
         margin-top: auto;
         padding-top: 10px;
         border-top: 1px solid #ddd;
+        height: 60px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .productDescription div {
+        line-height: 1.2;
     }
 
     .businessName {

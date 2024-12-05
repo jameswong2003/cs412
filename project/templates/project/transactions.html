@@ -1,36 +1,176 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
+<style>
+    .transactions-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
 
-<h1>Transactions</h1>
+    .transactions-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
 
-<p>
-    Sort by:
-    <a href="?sort=transaction_date">Oldest First</a> |
-    <a href="?sort=-transaction_date">Newest First</a>
-</p>
+    .transactions-container .filter-form {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
 
-<table>
-    <thead>
-        <tr>
-            <th>Buyer</th>
-            <th>Product</th>
-            <th>Business</th>
-            <th>Amount</th>
-            <th>Transaction Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for transaction in transactions %}
+    .transactions-container .filter-form input,
+    .transactions-container .filter-form select,
+    .transactions-container .filter-form button {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .transactions-container .filter-form input:focus,
+    .transactions-container .filter-form select:focus,
+    .transactions-container .filter-form button:focus {
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .transactions-container .filter-form button {
+        background-color: #0073e6;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .transactions-container .filter-form button:hover {
+        background-color: #005bb5;
+        transform: scale(1.05);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    table thead {
+        background-color: #0073e6;
+        color: white;
+    }
+
+    table thead th {
+        padding: 15px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    table tbody tr {
+        border-bottom: 1px solid #ddd;
+        background-color: #fff;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #f1f1f1;
+    }
+
+    table tbody tr:hover {
+        background-color: #e9f5ff;
+        cursor: pointer;
+    }
+
+    table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    table tbody td img {
+        max-width: 50px;
+        height: auto;
+        border-radius: 4px;
+    }
+
+    table tbody td:nth-child(2) {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    table tbody td:nth-child(2) img {
+        margin: 0;
+    }
+    
+    .empty-message {
+        text-align: center;
+        font-size: 1rem;
+        color: #555;
+        padding: 20px;
+    }
+</style>
+
+<div class="transactions-container">
+    <h1>Transactions</h1>
+
+    <form class="filter-form" method="get">
+        <input
+            type="text"
+            name="company_name"
+            placeholder="Filter by Company Name"
+            value="{{ company_name }}"
+        >
+        <select name="sort">
+            <option value="-transaction_date" {% if sort == "-transaction_date" %}selected{% endif %}>
+                Newest First
+            </option>
+            <option value="transaction_date" {% if sort == "transaction_date" %}selected{% endif %}>
+                Oldest First
+            </option>
+        </select>
+        <button type="submit">Apply Filters</button>
+    </form>
+
+    <table>
+        <thead>
             <tr>
-                <td>{{ transaction.buyer.username }}</td>
-                <td>{{ transaction.product.name }}</td>
-                <td>{{ transaction.product.business.name }}</td>
-                <td>{{ transaction.amount }}</td>
-                <td>{{ transaction.transaction_date|date:"F j, Y, g:i a" }}</td>
+                <th>Buyer</th>
+                <th>Product</th>
+                <th>Business</th>
+                <th>Amount</th>
+                <th>Transaction Date</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.buyer.username }}</td>
+                    <td>
+                        <img src="{{ transaction.product.picture_url }}" alt="{{ transaction.product.name }}">
+                        {{ transaction.product.name }}
+                    </td>
+                    <td>{{ transaction.product.business.name }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.transaction_date|date:"F j, Y, g:i a" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-message">No transactions found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

@@ -19,6 +19,9 @@
             background: #0073e6;
             color: white;
             padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         header a {
@@ -31,8 +34,14 @@
             text-decoration: underline;
         }
 
-        nav {
-            margin: 10px 0;
+        .navbar-left,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-right {
+            margin-left: auto;
         }
 
         main {
@@ -45,11 +54,14 @@
 
 <body>
     <header>
-        <nav>
+        <div class="navbar-left">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'transactions' %}">Transactions</a>
+        </div>
+        <div class="navbar-right">
             {% if user.is_authenticated %}
             <p>
-                Welcome, {{ user.username }} |
-                <a href="{% url 'profile' %}">Profile</a> |
+                <a href="{% url 'profile' %}">{{ user.username }}</a> |
                 <a href="{% url 'add_product' %}">Add Product</a> |
                 <a href="{% url 'logout' %}">Logout</a>
             </p>
@@ -59,7 +71,7 @@
                 <a href="{% url 'signup' %}">Sign Up</a>
             </p>
             {% endif %}
-        </nav>
+        </div>
     </header>
 
     <main>

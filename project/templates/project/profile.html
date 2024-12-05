@@ -3,7 +3,7 @@
 {% block content %}
 <style>
     .profile-container {
-        max-width: 800px;
+        max-width: 900px;
         margin: 20px auto;
         padding: 20px;
         background-color: #fff;
@@ -18,20 +18,24 @@
     }
 
     .profile-container h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
         margin-bottom: 20px;
+        text-align: center;
     }
 
     .profile-container h2 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         margin-bottom: 10px;
+        text-align: center;
     }
 
     .profile-container h3 {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         margin-top: 20px;
         margin-bottom: 10px;
         color: #0073e6;
+        border-bottom: 2px solid #0073e6;
+        padding-bottom: 5px;
     }
 
     .profile-container p {
@@ -42,18 +46,28 @@
     .products-list, .transactions-list {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
 
     .products-list li, .transactions-list li {
         margin-bottom: 15px;
-        padding: 10px;
+        padding: 15px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .products-list li strong, .transactions-list li strong {
         color: #0073e6;
+        font-size: 1.1rem;
+    }
+
+    .product-actions, .transaction-info {
+        text-align: right;
     }
 
     .profile-container a {
@@ -71,46 +85,57 @@
     .profile-container a:hover {
         background-color: #005bb5;
     }
+
+    .add-product-button {
+        display: block;
+        margin: 20px 0;
+        text-align: center;
+    }
 </style>
 
 <div class="profile-container">
-    <h1>Profile</h1>
-
-    <h2>{{ user.first_name }} {{user.last_name}}</h2>
-    <h3>{{ user.username }}</h3>
+    <h1>Your Profile</h1>
+    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+    <h3>@{{ user.username }}</h3>
 
     {% if business %}
-        <h3>Your Business:</h3>
+        <h3>Your Business</h3>
         <p><strong>Name:</strong> {{ business.name }}</p>
         <p><strong>Description:</strong> {{ business.description }}</p>
         <a href="{% url 'edit_business' %}">Edit Your Business</a>
 
-        <h3>Your Products:</h3>
+        <h3>Your Products</h3>
         <ul class="products-list">
             {% for product in products %}
                 <li>
-                    <strong>{{ product.name }}</strong> - ${{ product.price }}
-                    <br>
-                    <small>{{ product.description }}</small>
-                    <br>
-                    <a href="{% url 'edit_product' product.pk %}">Edit</a>
+                    <div>
+                        <strong>{{ product.name }}</strong> - ${{ product.price }}
+                        <p><small>{{ product.description }}</small></p>
+                    </div>
+                    <div class="product-actions">
+                        <a href="{% url 'edit_product' product.pk %}">Edit</a>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
-        <a href="{% url 'add_product' %}">Add a New Product</a>
+        <div class="add-product-button">
+            <a href="{% url 'add_product' %}">Add a New Product</a>
+        </div>
     {% else %}
         <p>You don't own a business yet. <a href="{% url 'create_business' %}">Create a Business</a></p>
     {% endif %}
 
-    <h3>Your Transactions:</h3>
+    <h3>Your Transactions</h3>
     <ul class="transactions-list">
         {% for transaction in transactions %}
             <li>
-                <strong>Bought {{ transaction.product.name }}</strong>
-                <br>
-                From: {{ transaction.product.business.name }}
-                <br>
-                Date: {{ transaction.transaction_date|date:"F j, Y, g:i a" }}
+                <div>
+                    <strong>Bought {{ transaction.product.name }}</strong>
+                    <p>
+                        From: {{ transaction.product.business.name }}<br>
+                        Date: {{ transaction.transaction_date|date:"F j, Y, g:i a" }}
+                    </p>
+                </div>
             </li>
         {% empty %}
             <p>You haven't made any purchases yet.</p>
