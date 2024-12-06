@@ -5,6 +5,38 @@
     h1 {
         text-align: center;
     }
+
+    .filterForm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .filterForm input,
+    .filterForm button {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filterForm button {
+        background-color: #0073e6;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filterForm button:hover {
+        background-color: #005bb5;
+    }
+
     .productsDiv {
         display: flex;
         flex-wrap: wrap;
@@ -60,6 +92,14 @@
 </style>
 
 <h1>Product List</h1>
+
+<form class="filterForm" method="get">
+    <input type="text" name="search" placeholder="Product Name" value="{{ search_query }}">
+    <input type="text" name="business" placeholder="Business Name" value="{{ business_query }}">
+    <input type="number" step="0.01" name="min_price" placeholder="Min Price" value="{{ min_price }}">
+    <input type="number" step="0.01" name="max_price" placeholder="Max Price" value="{{ max_price }}">
+    <button type="submit">Apply Filters</button>
+</form>
 
 <div class="productsDiv">
     {% for product in products %}

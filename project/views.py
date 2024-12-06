@@ -9,7 +9,30 @@ from .forms import ProductForm, BusinessForm
 
 def index(request):
     products = Product.objects.all()
-    return render(request, 'project/index.html', {'products': products})
+
+    search_query = request.GET.get('search', '')
+    business_query = request.GET.get('business', '')
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+
+    if search_query:
+        products = products.filter(name__icontains=search_query)
+
+    if business_query:
+        products = products.filter(business__name__icontains=business_query)
+
+    if min_price:
+        products = products.filter(price__gte=min_price)
+    if max_price:
+        products = products.filter(price__lte=max_price)
+
+    return render(request, 'project/index.html', {
+        'products': products,
+        'search_query': search_query,
+        'business_query': business_query,
+        'min_price': min_price,
+        'max_price': max_price
+    })
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -18,20 +41,16 @@ def product_detail(request, pk):
 def transactions(request):
     transactions = Transaction.objects.all()
 
-    # Get query parameters
     company_name = request.GET.get('company_name', '')
     buyer_name = request.GET.get('buyer_name', '')
-    sort = request.GET.get('sort', '-transaction_date')  # Default to newest first
+    sort = request.GET.get('sort', '-transaction_date')
 
-    # Filter by company name if provided
     if company_name:
         transactions = transactions.filter(product__business__name__icontains=company_name)
 
-    # Filter by buyer name if provided
     if buyer_name:
         transactions = transactions.filter(buyer__username__icontains=buyer_name)
 
-    # Apply sorting
     transactions = transactions.order_by(sort)
 
     context = {
@@ -48,7 +67,11 @@ def businesses(request):
 
 def business_detail(request, pk):
     business = get_object_or_404(Business, pk=pk)
-    return render(request, 'project/business_detail.html', {'business': business})
+    products = Product.objects.filter(business=business)
+    return render(request, 'project/business_detail.html', {
+        'business': business,
+        'products': products
+    })
 
 def signup(request):
     if request.method == 'POST':
@@ -78,13 +101,13 @@ def add_product(request):
     try:
         business = Business.objects.get(owner=request.user)
     except Business.DoesNotExist:
-        return redirect('create_business')  # Redirect if the user doesn't have a business
+        return redirect('create_business')
 
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            product.business = business  # Assign the business to the product
+            product.business = business
             product.save()
             return redirect('index')
     else:
@@ -96,15 +119,14 @@ def add_product(request):
 def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
-    # Check if the logged-in user owns the business associated with this product
     if product.business.owner != request.user:
-        return redirect('profile')  # Redirect if the user doesn't own the product
+        return redirect('profile')
 
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # Redirect to the profile page after saving
+            return redirect('profile')
     else:
         form = ProductForm(instance=product)
 
@@ -126,16 +148,12 @@ def create_business(request):
 @login_required
 def profile(request):
     try:
-        # Get the business owned by the logged-in user
         business = Business.objects.get(owner=request.user)
-        # Get all products associated with the business
         products = Product.objects.filter(business=business)
     except Business.DoesNotExist:
-        # If the user doesn't own a business, set business and products to None
         business = None
         products = None
 
-    # Get the transactions made by the user
     transactions = Transaction.objects.filter(buyer=request.user)
 
     context = {

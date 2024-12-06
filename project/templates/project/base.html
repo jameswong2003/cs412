@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop Businesses</title>
     <style>
+        /* General styles */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -15,6 +16,13 @@
             color: #333;
         }
 
+        main {
+            padding: 20px;
+            margin: auto;
+            max-width: 1200px;
+        }
+
+        /* Navbar styles */
         header {
             background: #0073e6;
             color: white;
@@ -23,41 +31,79 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .navbar-left,
-        .navbar-right {
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        header .navbar-left,
+        header .navbar-right {
             display: flex;
             align-items: center;
         }
 
-        .navbar-left a,
-        .navbar-right a {
+        header a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
-            padding: 8px 12px;
+            margin: 0 10px;
+            padding: 8px 15px;
             border-radius: 4px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .navbar-left a:hover,
-        .navbar-right a:hover {
+        header a:hover {
             background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
-        .navbar-right {
+        header .navbar-right {
             margin-left: auto;
         }
 
-        .navbar-right p {
-            margin: 0;
+        header .navbar-right form {
+            display: inline;
         }
 
-        main {
-            padding: 20px;
-            margin: auto;
-            background: #f4f4f9;
+        header .navbar-right button {
+            background: none;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 15px;
+            font-size: inherit;
+            padding: 8px 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        header .navbar-right button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Hover effects */
+        header a:hover,
+        header button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+            }
+
+            header .navbar-left,
+            header .navbar-right {
+                justify-content: center;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
@@ -65,14 +111,19 @@
 <body>
     <header>
         <div class="navbar-left">
-            <a href="{% url 'index' %}">Home</a>
+            <div class="logo">ShopBiz</div>
+            <a href="{% url 'index' %}">Marketplace</a>
+            <a href="{% url 'businesses' %}">Businesses</a>
             <a href="{% url 'transactions' %}">Transactions</a>
         </div>
         <div class="navbar-right">
             {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">{{ user.username }}</a>
             <a href="{% url 'add_product' %}">Add Product</a>
-            <a href="{% url 'logout' %}">Logout</a>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
             {% else %}
             <a href="{% url 'login' %}">Login</a>
             <a href="{% url 'signup' %}">Sign Up</a>
