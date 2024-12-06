@@ -6,41 +6,52 @@
         max-width: 900px;
         margin: 20px auto;
         padding: 20px;
-        background-color: #fff;
+        background-color: #fdfdfd;
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
     }
 
-    .profile-container h1, h2, h3 {
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        color: #0073e6;
+    }
+
+    .profile-header h2 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
         color: #333;
     }
 
-    .profile-container h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-        text-align: center;
+    .profile-header h3 {
+        font-size: 1.2rem;
+        color: #777;
+        font-style: italic;
     }
 
-    .profile-container h2 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-        text-align: center;
+    .profile-section {
+        margin-bottom: 30px;
     }
 
-    .profile-container h3 {
-        font-size: 1.4rem;
-        margin-top: 20px;
-        margin-bottom: 10px;
+    .profile-section h3 {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
         color: #0073e6;
         border-bottom: 2px solid #0073e6;
         padding-bottom: 5px;
     }
 
-    .profile-container p {
+    .profile-section p {
         font-size: 1rem;
         margin-bottom: 10px;
+        color: #555;
     }
 
     .products-list, .transactions-list {
@@ -50,96 +61,123 @@
     }
 
     .products-list li, .transactions-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
         margin-bottom: 15px;
         padding: 15px;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 8px;
         background-color: #f9f9f9;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    }
+
+    .products-list li img {
+        max-width: 60px;
+        height: auto;
+        border-radius: 4px;
+        margin-right: 15px;
     }
 
     .products-list li strong, .transactions-list li strong {
-        color: #0073e6;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
-    .product-actions, .transaction-info {
+    .product-actions, .transactions-info {
         text-align: right;
     }
 
     .profile-container a {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 10px 20px;
-        background-color: #0073e6;
-        color: #fff;
         text-decoration: none;
+        padding: 10px 15px;
+        background-color: #0073e6;
+        color: white;
         border-radius: 5px;
         font-size: 1rem;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .profile-container a:hover {
         background-color: #005bb5;
+        transform: scale(1.05);
     }
 
     .add-product-button {
-        display: block;
-        margin: 20px 0;
         text-align: center;
+        margin-top: 20px;
+    }
+
+    .empty-state {
+        text-align: center;
+        margin: 20px 0;
+        color: #777;
+        font-size: 1.1rem;
     }
 </style>
 
 <div class="profile-container">
-    <h1>Your Profile</h1>
-    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-    <h3>@{{ user.username }}</h3>
+    <div class="profile-header">
+        <h1>Your Profile</h1>
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <h3>@{{ user.username }}</h3>
+    </div>
 
     {% if business %}
-        <h3>Your Business</h3>
-        <p><strong>Name:</strong> {{ business.name }}</p>
-        <p><strong>Description:</strong> {{ business.description }}</p>
-        <a href="{% url 'edit_business' %}">Edit Your Business</a>
+        <div class="profile-section">
+            <h3>Business Info</h3>
+            <p><strong>Name:</strong> {{ business.name }}</p>
+            <p><strong>Description:</strong> {{ business.description }}</p>
+            <a href="{% url 'edit_business' %}">Edit Your Business</a>
+        </div>
 
-        <h3>Your Products</h3>
-        <ul class="products-list">
-            {% for product in products %}
-                <li>
-                    <div>
-                        <strong>{{ product.name }}</strong> - ${{ product.price }}
-                        <p><small>{{ product.description }}</small></p>
-                    </div>
-                    <div class="product-actions">
-                        <a href="{% url 'edit_product' product.pk %}">Edit</a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="add-product-button">
-            <a href="{% url 'add_product' %}">Add a New Product</a>
+        <div class="profile-section">
+            <h3>Your Products</h3>
+            <ul class="products-list">
+                {% for product in products %}
+                    <li>
+                        <div style="display: flex; align-items: center;">
+                            <img src="{{ product.picture_url }}" alt="{{ product.name }}">
+                            <div>
+                                <strong>{{ product.name }}</strong> - ${{ product.price }}
+                                <p style="margin: 5px 0; font-size: 0.9rem; color: #555;">{{ product.description }}</p>
+                            </div>
+                        </div>
+                        <div class="product-actions">
+                            <a href="{% url 'edit_product' product.pk %}">Edit</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="add-product-button">
+                <a href="{% url 'add_product' %}">Add a New Product</a>
+            </div>
         </div>
     {% else %}
-        <p>You don't own a business yet. <a href="{% url 'create_business' %}">Create a Business</a></p>
+        <div class="profile-section empty-state">
+            <p>You don't own a business yet. <a href="{% url 'create_business' %}">Create a Business</a></p>
+        </div>
     {% endif %}
 
-    <h3>Your Transactions</h3>
-    <ul class="transactions-list">
-        {% for transaction in transactions %}
-            <li>
-                <div>
-                    <strong>Bought {{ transaction.product.name }}</strong>
-                    <p>
-                        From: {{ transaction.product.business.name }}<br>
-                        Date: {{ transaction.transaction_date|date:"F j, Y, g:i a" }}
-                    </p>
+    <div class="profile-section">
+        <h3>Your Transactions</h3>
+        <ul class="transactions-list">
+            {% for transaction in transactions %}
+                <li>
+                    <div>
+                        <strong>Bought {{ transaction.product.name }}</strong>
+                        <p>
+                            From: {{ transaction.product.business.name }}<br>
+                            Date: {{ transaction.transaction_date|date:"F j, Y, g:i a" }}
+                        </p>
+                    </div>
+                </li>
+            {% empty %}
+                <div class="empty-state">
+                    <p>You haven't made any purchases yet.</p>
                 </div>
-            </li>
-        {% empty %}
-            <p>You haven't made any purchases yet.</p>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock %}

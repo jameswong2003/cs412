@@ -16,16 +16,20 @@ def product_detail(request, pk):
     return render(request, 'project/product_detail.html', {'product': product})
 
 def transactions(request):
-    # Get all transactions
     transactions = Transaction.objects.all()
 
     # Get query parameters
     company_name = request.GET.get('company_name', '')
+    buyer_name = request.GET.get('buyer_name', '')
     sort = request.GET.get('sort', '-transaction_date')  # Default to newest first
 
     # Filter by company name if provided
     if company_name:
         transactions = transactions.filter(product__business__name__icontains=company_name)
+
+    # Filter by buyer name if provided
+    if buyer_name:
+        transactions = transactions.filter(buyer__username__icontains=buyer_name)
 
     # Apply sorting
     transactions = transactions.order_by(sort)
@@ -33,9 +37,18 @@ def transactions(request):
     context = {
         'transactions': transactions,
         'company_name': company_name,
+        'buyer_name': buyer_name,
         'sort': sort,
     }
     return render(request, 'project/transactions.html', context)
+
+def businesses(request):
+    businesses = Business.objects.all()
+    return render(request, 'project/businesses.html', {'businesses': businesses})
+
+def business_detail(request, pk):
+    business = get_object_or_404(Business, pk=pk)
+    return render(request, 'project/business_detail.html', {'business': business})
 
 def signup(request):
     if request.method == 'POST':

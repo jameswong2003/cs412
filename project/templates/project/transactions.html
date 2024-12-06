@@ -113,7 +113,7 @@
     table tbody td:nth-child(2) img {
         margin: 0;
     }
-    
+
     .empty-message {
         text-align: center;
         font-size: 1rem;
@@ -132,6 +132,12 @@
             placeholder="Filter by Company Name"
             value="{{ company_name }}"
         >
+        <input
+            type="text"
+            name="buyer_name"
+            placeholder="Filter by Buyer Name"
+            value="{{ buyer_name }}"
+        >
         <select name="sort">
             <option value="-transaction_date" {% if sort == "-transaction_date" %}selected{% endif %}>
                 Newest First
@@ -149,7 +155,7 @@
                 <th>Buyer</th>
                 <th>Product</th>
                 <th>Business</th>
-                <th>Amount</th>
+                <th>Total Spent</th>
                 <th>Transaction Date</th>
             </tr>
         </thead>
@@ -162,7 +168,7 @@
                         {{ transaction.product.name }}
                     </td>
                     <td>{{ transaction.product.business.name }}</td>
-                    <td>{{ transaction.amount }}</td>
+                    <td>${{ transaction.total_spent }}</td>
                     <td>{{ transaction.transaction_date|date:"F j, Y, g:i a" }}</td>
                 </tr>
             {% empty %}

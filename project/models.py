@@ -27,3 +27,8 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f'{self.buyer.username} bought {self.product.name}'
+
+    @property
+    def total_spent(self):
+        """Calculate the total amount spent on this transaction."""
+        return self.amount * self.product.price

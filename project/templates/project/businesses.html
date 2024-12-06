@@ -1,0 +1,73 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<style>
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: #0073e6;
+    }
+
+    .businessDiv {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .businessItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #fff;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 300px;
+        height: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .businessItem:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .businessDescription div {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        color: #555;
+    }
+
+    .businessDescription div:first-child {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #0073e6;
+    }
+
+    .businessDescription div:last-child {
+        font-size: 0.9rem;
+        color: #777;
+    }
+</style>
+
+<h1>Businesses</h1>
+
+<div class="businessDiv">
+    {% for business in businesses %}
+    <a href="{% url 'business_detail' business.pk %}" class="businessItem">
+        <div class="businessDescription">
+            <div>{{ business.name }}</div>
+            <div>Owner: {{ business.owner.first_name }} {{ business.owner.last_name }}</div>
+            <div>{{ business.description }}</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

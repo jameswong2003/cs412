@@ -22,16 +22,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        header a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-left,
@@ -40,8 +31,27 @@
             align-items: center;
         }
 
+        .navbar-left a,
+        .navbar-right a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar-left a:hover,
+        .navbar-right a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .navbar-right {
             margin-left: auto;
+        }
+
+        .navbar-right p {
+            margin: 0;
         }
 
         main {
@@ -60,16 +70,12 @@
         </div>
         <div class="navbar-right">
             {% if user.is_authenticated %}
-            <p>
-                <a href="{% url 'profile' %}">{{ user.username }}</a> |
-                <a href="{% url 'add_product' %}">Add Product</a> |
-                <a href="{% url 'logout' %}">Logout</a>
-            </p>
+            <a href="{% url 'profile' %}">{{ user.username }}</a>
+            <a href="{% url 'add_product' %}">Add Product</a>
+            <a href="{% url 'logout' %}">Logout</a>
             {% else %}
-            <p>
-                <a href="{% url 'login' %}">Login</a> |
-                <a href="{% url 'signup' %}">Sign Up</a>
-            </p>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
             {% endif %}
         </div>
     </header>
