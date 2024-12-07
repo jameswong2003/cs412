@@ -1,13 +1,83 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>Edit Product: {{ product.name }}</h1>
+<style>
+    .edit-product-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fdfdfd;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
-</form>
+    .edit-product-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
 
-<a href="{% url 'profile' %}">Cancel</a>
+    .edit-product-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .edit-product-container form input,
+    .edit-product-container form textarea,
+    .edit-product-container form button {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .edit-product-container form textarea {
+        resize: vertical;
+    }
+
+    .edit-product-container form button {
+        background-color: #0073e6;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .edit-product-container form button:hover {
+        background-color: #005bb5;
+        transform: scale(1.05);
+    }
+
+    .cancel-link {
+        display: inline-block;
+        margin-top: 15px;
+        text-align: center;
+        color: #0073e6;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .cancel-link:hover {
+        color: #005bb5;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="edit-product-container">
+    <h1>Edit Product: {{ product.name }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="{% url 'profile' %}" class="cancel-link">Cancel</a>
+</div>
 {% endblock %}

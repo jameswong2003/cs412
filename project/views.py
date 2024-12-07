@@ -61,9 +61,27 @@ def transactions(request):
     }
     return render(request, 'project/transactions.html', context)
 
+from django.db.models import Q
+
 def businesses(request):
     businesses = Business.objects.all()
-    return render(request, 'project/businesses.html', {'businesses': businesses})
+
+    name_query = request.GET.get('name', '')
+    owner_query = request.GET.get('owner', '')
+
+    if name_query:
+        businesses = businesses.filter(name__icontains=name_query)
+    if owner_query:
+        businesses = businesses.filter(
+            Q(owner__first_name__icontains=owner_query) | Q(owner__last_name__icontains=owner_query)
+        )
+
+    return render(request, 'project/businesses.html', {
+        'businesses': businesses,
+        'name_query': name_query,
+        'owner_query': owner_query,
+    })
+
 
 def business_detail(request, pk):
     business = get_object_or_404(Business, pk=pk)

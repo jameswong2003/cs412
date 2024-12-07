@@ -9,6 +9,39 @@
         color: #0073e6;
     }
 
+    .filterForm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fdfdfd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filterForm input,
+    .filterForm button {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filterForm button {
+        background-color: #0073e6;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filterForm button:hover {
+        background-color: #005bb5;
+    }
+
     .businessDiv {
         display: flex;
         flex-wrap: wrap;
@@ -58,6 +91,13 @@
 </style>
 
 <h1>Businesses</h1>
+
+<!-- Filter Form -->
+<form class="filterForm" method="get">
+    <input type="text" name="name" placeholder="Business Name" value="{{ name_query }}" autocomplete="off">
+    <input type="text" name="owner" placeholder="Owner Name" value="{{ owner_query }}" autocomplete="off">
+    <button type="submit">Apply Filters</button>
+</form>
 
 <div class="businessDiv">
     {% for business in businesses %}

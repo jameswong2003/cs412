@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum, F
 from django.contrib.auth.models import User
 
 class Business(models.Model):
@@ -9,6 +10,14 @@ class Business(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def total_revenue(self):
+        """Calculate total revenue based on transactions"""
+        revenue = Transaction.objects.filter(product__business=self).aggregate(
+            total_revenue=Sum(F('amount') * F('product__price'))
+        )['total_revenue']
+        return round(revenue or 0, 2)
+
 class Product(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
     picture_url = models.CharField(max_length=1000)
@@ -18,6 +27,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @property
+    def amount_sold(self):
+        """Calculate the total amount sold for this product."""
+        total_sold = Transaction.objects.filter(product=self).aggregate(
+            total_sold=Sum('amount')
+        )['total_sold']
+        return total_sold or 0
 
 class Transaction(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)

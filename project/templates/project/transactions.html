@@ -131,12 +131,14 @@
             name="company_name"
             placeholder="Filter by Company Name"
             value="{{ company_name }}"
+            autocomplete="off"
         >
         <input
             type="text"
             name="buyer_name"
             placeholder="Filter by Buyer Name"
             value="{{ buyer_name }}"
+            autocomplete="off"
         >
         <select name="sort">
             <option value="-transaction_date" {% if sort == "-transaction_date" %}selected{% endif %}>

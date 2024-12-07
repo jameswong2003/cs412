@@ -5,6 +5,11 @@
     .businessDetail {
         text-align: center;
         margin-bottom: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .businessDetail h1 {
@@ -13,13 +18,26 @@
         color: #0073e6;
     }
 
-    h2 {
-        text-align: center;
-    }
-
     .businessDetail p {
         font-size: 1rem;
         color: #555;
+        margin: 10px 0;
+    }
+
+    .businessDetail .revenue {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin-top: 15px;
+    }
+
+    h2 {
+        text-align: center;
+        margin: 20px 0;
+        color: #0073e6;
+        font-size: 2rem;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
     }
 
     .productsDiv {
@@ -40,9 +58,10 @@
         border-radius: 8px;
         background-color: #fff;
         transition: transform 0.2s, box-shadow 0.2s;
-        width: 200px;
-        height: 300px;
+        width: 220px;
+        height: 320px;
         text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .productItem img {
@@ -50,6 +69,7 @@
         height: 180px;
         object-fit: contain;
         border-radius: 8px;
+        margin-bottom: 10px;
     }
 
     .productDescription {
@@ -61,11 +81,12 @@
     .productDescription div {
         margin-bottom: 5px;
         font-size: 1rem;
+        color: #555;
     }
 
     .productItem:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 </style>
 
@@ -73,6 +94,7 @@
     <h1>{{ business.name }}</h1>
     <p>Owned by {{ business.owner.first_name }} {{ business.owner.last_name }}</p>
     <p>{{ business.description }}</p>
+    <div class="revenue">Total Revenue: ${{ business.total_revenue }}</div>
 </div>
 
 <h2>Product List</h2>
