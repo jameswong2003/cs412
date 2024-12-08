@@ -8,6 +8,7 @@ from .models import Product, Transaction, Business
 from .forms import ProductForm, BusinessForm
 
 def index(request):
+    """Index page to show all available products on the marketplace"""
     products = Product.objects.all()
 
     search_query = request.GET.get('search', '')
@@ -35,10 +36,12 @@ def index(request):
     })
 
 def product_detail(request, pk):
+    """Shows a specific product detail"""
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'project/product_detail.html', {'product': product})
 
 def transactions(request):
+    """Shows all transactions made under the service"""
     transactions = Transaction.objects.all()
 
     company_name = request.GET.get('company_name', '')
@@ -61,9 +64,8 @@ def transactions(request):
     }
     return render(request, 'project/transactions.html', context)
 
-from django.db.models import Q
-
 def businesses(request):
+    """Shows all businesses under the service"""
     businesses = Business.objects.all()
 
     name_query = request.GET.get('name', '')
@@ -82,8 +84,8 @@ def businesses(request):
         'owner_query': owner_query,
     })
 
-
 def business_detail(request, pk):
+    """Shows details of a specific business"""
     business = get_object_or_404(Business, pk=pk)
     products = Product.objects.filter(business=business)
     return render(request, 'project/business_detail.html', {
@@ -92,6 +94,7 @@ def business_detail(request, pk):
     })
 
 def signup(request):
+    """Signs a user up"""
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -106,6 +109,7 @@ def signup(request):
 
 @login_required
 def purchase_product(request, pk):
+    """Purchase a product and save it to the transaction table"""
     product = get_object_or_404(Product, pk=pk)
     
     if request.method == 'POST':
@@ -116,6 +120,7 @@ def purchase_product(request, pk):
 
 @login_required
 def add_product(request):
+    """Creates a new product under the specific business"""
     try:
         business = Business.objects.get(owner=request.user)
     except Business.DoesNotExist:
@@ -135,6 +140,7 @@ def add_product(request):
 
 @login_required
 def edit_product(request, pk):
+    """Edits a specific product"""
     product = get_object_or_404(Product, pk=pk)
 
     if product.business.owner != request.user:
@@ -152,6 +158,7 @@ def edit_product(request, pk):
 
 @login_required
 def create_business(request):
+    """Create a business"""
     if request.method == 'POST':
         form = BusinessForm(request.POST)
         if form.is_valid():
@@ -165,6 +172,7 @@ def create_business(request):
 
 @login_required
 def profile(request):
+    """Page to look at the specific profile"""
     try:
         business = Business.objects.get(owner=request.user)
         products = Product.objects.filter(business=business)
@@ -183,6 +191,7 @@ def profile(request):
 
 @login_required
 def edit_business(request):
+    """Edits a business"""
     try:
         business = Business.objects.get(owner=request.user)
     except Business.DoesNotExist:

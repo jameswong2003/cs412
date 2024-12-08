@@ -4,46 +4,58 @@
 <style>
     .businessDetail {
         text-align: center;
-        margin-bottom: 30px;
-        padding: 20px;
-        background-color: #f9f9f9;
+        margin: 30px auto;
+        padding: 25px;
+        background-color: #fdfdfd;
         border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
     }
 
     .businessDetail h1 {
         font-size: 2.5rem;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         color: #0073e6;
     }
 
     .businessDetail p {
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: #555;
         margin: 10px 0;
     }
 
     .businessDetail .revenue {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         font-weight: bold;
         color: #333;
-        margin-top: 15px;
+        margin-top: 20px;
+        background: #e6f7ff;
+        padding: 10px;
+        border-radius: 5px;
     }
 
     h2 {
         text-align: center;
-        margin: 20px 0;
+        margin: 30px 0;
         color: #0073e6;
-        font-size: 2rem;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
+        font-size: 2.2rem;
+        position: relative;
+    }
+
+    h2::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: #0073e6;
+        margin: 10px auto 0;
     }
 
     .productsDiv {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 25px;
         justify-content: center;
     }
 
@@ -55,55 +67,62 @@
         color: inherit;
         border: 1px solid #ddd;
         padding: 15px;
-        border-radius: 8px;
+        border-radius: 10px;
         background-color: #fff;
         transition: transform 0.2s, box-shadow 0.2s;
-        width: 220px;
-        height: 320px;
+        width: 250px;
+        height: 350px;
         text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .productItem img {
         max-width: 100%;
         height: 180px;
         object-fit: contain;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
     }
 
     .productDescription {
         margin-top: auto;
         padding-top: 10px;
-        border-top: 1px solid #ddd;
+        border-top: 1px solid #eee;
     }
 
     .productDescription div {
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         font-size: 1rem;
         color: #555;
     }
 
+    .productDescription .amountSoldText {
+        font-weight: bold;
+        color: #0073e6;
+        font-size: 1rem;
+    }
+
     .productItem:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
 </style>
 
 <div class="businessDetail">
     <h1>{{ business.name }}</h1>
-    <p>Owned by {{ business.owner.first_name }} {{ business.owner.last_name }}</p>
+    <p>Owned by <strong>{{ business.owner.first_name }} {{ business.owner.last_name }}</strong></p>
     <p>{{ business.description }}</p>
     <div class="revenue">Total Revenue: ${{ business.total_revenue }}</div>
 </div>
 
-<h2>Product List</h2>
+<h2>Our Products</h2>
 
 <div class="productsDiv">
     {% for product in products %}
     <a href="{% url 'product_detail' product.pk %}" class="productItem">
         <img src="{{ product.picture_url }}" alt="{{ product.name }}">
         <div class="productDescription">
+            <div class="amountSoldText">{{ product.amount_sold }} SOLD</div>
             <div>${{ product.price }}</div>
             <div>{{ product.name }}</div>
         </div>
